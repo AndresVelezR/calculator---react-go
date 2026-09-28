@@ -2,6 +2,7 @@ package domain
 
 import (
 	"errors"
+	"math"
 	"testing"
 )
 
@@ -25,6 +26,14 @@ func TestCalculate(t *testing.T) {
 		{"negative square root", OperationSquareRoot, -1, 0, 0, ErrNegativeSquareRoot},
 		{"unknown operation", Operation("modulo"), 1, 2, 0, ErrUnknownOperation},
 		{"empty operation", Operation(""), 1, 2, 0, ErrUnknownOperation},
+		{"power overflow", OperationPower, 10, 1000, 0, ErrNonFiniteResult},
+		{"power has no real result", OperationPower, -1, 0.5, 0, ErrNonFiniteResult},
+		{"addition overflow", OperationAdd, math.MaxFloat64, math.MaxFloat64, 0, ErrNonFiniteResult},
+		{"subtraction overflow", OperationSubtract, -math.MaxFloat64, math.MaxFloat64, 0, ErrNonFiniteResult},
+		{"multiplication overflow", OperationMultiply, math.MaxFloat64, 2, 0, ErrNonFiniteResult},
+		{"division overflow", OperationDivide, math.MaxFloat64, 0.5, 0, ErrNonFiniteResult},
+		{"percentage overflow", OperationPercentage, math.MaxFloat64, 200, 0, ErrNonFiniteResult},
+		{"NaN result", OperationSquareRoot, math.NaN(), 0, 0, ErrNonFiniteResult},
 	}
 
 	for _, testCase := range testCases {

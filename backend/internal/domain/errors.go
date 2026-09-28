@@ -16,4 +16,6 @@ var (
 
 	// unknown operation
 	ErrUnknownOperation = errors.New("unknown operation")
+
+	ErrNonFiniteResult = errors.New("result is not a finite number")
 )

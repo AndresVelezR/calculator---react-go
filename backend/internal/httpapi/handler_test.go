@@ -44,6 +44,8 @@ func TestCalculateHandler(t *testing.T) {
 		{"null b", `{"operation":"add","a":1,"b":null}`, 400, 0, "b is required for this operation"},
 		{"divide by zero", `{"operation":"divide","a":1,"b":0}`, 422, 0, "division by zero"},
 		{"negative square root", `{"operation":"square_root","a":-1}`, 422, 0, "square root of a negative number"},
+		{"infinite result", `{"operation":"power","a":10,"b":1000}`, 422, 0, "result is not a finite number"},
+		{"NaN result", `{"operation":"power","a":-1,"b":0.5}`, 422, 0, "result is not a finite number"},
 	}
 
 	for _, testCase := range testCases {

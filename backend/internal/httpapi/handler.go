@@ -47,7 +47,7 @@ func CalculateHandler(writer http.ResponseWriter, request *http.Request) {
 		statusCode := http.StatusInternalServerError
 		if errors.Is(err, domain.ErrUnknownOperation) {
 			statusCode = http.StatusBadRequest
-		} else if errors.Is(err, domain.ErrDivisionByZero) || errors.Is(err, domain.ErrNegativeSquareRoot) {
+		} else if errors.Is(err, domain.ErrDivisionByZero) || errors.Is(err, domain.ErrNegativeSquareRoot) || errors.Is(err, domain.ErrNonFiniteResult) {
 			statusCode = http.StatusUnprocessableEntity
 		}
 		writeJSON(writer, statusCode, ErrorResponse{Error: err.Error()})
