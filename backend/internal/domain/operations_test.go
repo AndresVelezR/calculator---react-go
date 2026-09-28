@@ -67,3 +67,37 @@ func TestSubtract(t *testing.T) {
 		})
 	}
 }
+
+func TestMultiply(t *testing.T) {
+	testCases := []struct {
+		name           string
+		firstNumber    float64
+		secondNumber   float64
+		expectedResult float64
+	}{
+		{"two positive numbers", 3, 4, 12},
+		{"one negative", -3, 4, -12},
+		{"two negatives", -3, -4, 12},
+		{"times zero", 5, 0, 0},
+		{"decimals", 0.5, 4, 2},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			actualResult := Multiply(
+				testCase.firstNumber,
+				testCase.secondNumber,
+			)
+
+			if actualResult != testCase.expectedResult {
+				t.Errorf(
+					"Multiply(%v, %v) = %v, expected %v",
+					testCase.firstNumber,
+					testCase.secondNumber,
+					actualResult,
+					testCase.expectedResult,
+				)
+			}
+		})
+	}
+}
