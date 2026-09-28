@@ -1,6 +1,7 @@
 import { Display } from './Display'
 import { Keypad } from './Keypad'
 import { useCalculator } from './useCalculator'
+import { formatResult } from './formatResult'
 import type { BinaryOperation } from './types'
 
 const operationSymbols: Record<BinaryOperation, string> = {
@@ -9,12 +10,14 @@ const operationSymbols: Record<BinaryOperation, string> = {
 
 export function Calculator() {
   const calculator = useCalculator()
-  const expression = calculator.pendingOperation === null ? '' :
-    `${calculator.previousNumber} ${operationSymbols[calculator.pendingOperation]}`
+  const expression = calculator.pendingOperation === null || calculator.previousNumber === null ? '' :
+    `${formatResult(calculator.previousNumber)} ${operationSymbols[calculator.pendingOperation]}`
+
+  const displayValue = calculator.isNewEntry ? formatResult(Number(calculator.display)) : calculator.display
 
   return (
     <section className="calculator" aria-label="Calculator">
-      <Display value={calculator.display} expression={expression} error={calculator.error} loading={calculator.loading} />
+      <Display value={displayValue} expression={expression} error={calculator.error} loading={calculator.loading} />
       <Keypad
         disabled={calculator.loading}
         onDigit={calculator.enterDigit}
