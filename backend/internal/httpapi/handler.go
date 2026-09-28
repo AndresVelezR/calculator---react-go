@@ -2,7 +2,6 @@ package httpapi
 
 import (
 	"encoding/json"
-	"errors"
 	"io"
 	"log"
 	"net/http"
@@ -44,13 +43,7 @@ func CalculateHandler(writer http.ResponseWriter, request *http.Request) {
 	}
 	result, err := domain.Calculate(input.Operation, *input.A, secondNumber)
 	if err != nil {
-		statusCode := http.StatusInternalServerError
-		if errors.Is(err, domain.ErrUnknownOperation) {
-			statusCode = http.StatusBadRequest
-		} else if errors.Is(err, domain.ErrDivisionByZero) || errors.Is(err, domain.ErrNegativeSquareRoot) || errors.Is(err, domain.ErrNonFiniteResult) {
-			statusCode = http.StatusUnprocessableEntity
-		}
-		writeJSON(writer, statusCode, ErrorResponse{Error: err.Error()})
+		writeJSON(writer, domainErrorStatus(err), ErrorResponse{Error: err.Error()})
 		return
 	}
 	writeJSON(writer, http.StatusOK, CalculateResponse{Result: result})
