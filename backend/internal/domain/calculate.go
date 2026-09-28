@@ -1,5 +1,7 @@
 package domain
 
+import "math"
+
 // Operation is the name of a math operation, like "add" or "divide".
 type Operation string
 
@@ -18,23 +20,32 @@ const (
 // This is the single entry point the HTTP layer will call.
 // Note: square root only needs one number, so secondNumber is ignored there.
 func Calculate(operation Operation, firstNumber, secondNumber float64) (float64, error) {
+	var result float64
+	var err error
 	switch operation {
 	case OperationAdd:
-		return Add(firstNumber, secondNumber), nil
+		result = Add(firstNumber, secondNumber)
 	case OperationSubtract:
-		return Subtract(firstNumber, secondNumber), nil
+		result = Subtract(firstNumber, secondNumber)
 	case OperationMultiply:
-		return Multiply(firstNumber, secondNumber), nil
+		result = Multiply(firstNumber, secondNumber)
 	case OperationDivide:
-		return Divide(firstNumber, secondNumber)
+		result, err = Divide(firstNumber, secondNumber)
 	case OperationPower:
-		return Power(firstNumber, secondNumber), nil
+		result = Power(firstNumber, secondNumber)
 	case OperationSquareRoot:
-		return SquareRoot(firstNumber)
+		result, err = SquareRoot(firstNumber)
 	case OperationPercentage:
-		return Percentage(firstNumber, secondNumber), nil
+		result = Percentage(firstNumber, secondNumber)
 	default:
 		// nobody told us how to do this one
 		return 0, ErrUnknownOperation
 	}
+	if err != nil {
+		return 0, err
+	}
+	if math.IsInf(result, 0) || math.IsNaN(result) {
+		return 0, ErrNonFiniteResult
+	}
+	return result, nil
 }
