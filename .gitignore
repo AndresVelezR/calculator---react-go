@@ -5,3 +5,5 @@ backend/bin/
 *.log
 .env
 .DS_Store
+*.swp
+*.swo
