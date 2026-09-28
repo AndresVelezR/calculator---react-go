@@ -33,3 +33,37 @@ func TestAdd(t *testing.T) {
 		})
 	}
 }
+
+
+func TestSubtract(t *testing.T) {
+	testCases := []struct {
+		name           string
+		firstNumber    float64
+		secondNumber   float64
+		expectedResult float64
+	}{
+		{"simple subtraction", 10, 4, 6},
+		{"result is negative", 4, 10, -6},
+		{"subtracting zero", 5, 0, 5},
+		{"decimals", 2.5, 0.5, 2},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			actualResult := Subtract(
+				testCase.firstNumber,
+				testCase.secondNumber,
+			)
+
+			if actualResult != testCase.expectedResult {
+				t.Errorf(
+					"Subtract(%v, %v) = %v, expected %v",
+					testCase.firstNumber,
+					testCase.secondNumber,
+					actualResult,
+					testCase.expectedResult,
+				)
+			}
+		})
+	}
+}
