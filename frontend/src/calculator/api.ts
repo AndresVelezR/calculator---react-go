@@ -1,6 +1,6 @@
 import type { CalculateRequest, CalculateResponse, ErrorResponse } from './types'
 
-const apiBaseUrl = 'http://localhost:8080'
+const apiBaseUrl = (import.meta.env.VITE_API_URL ?? 'http://localhost:8080').replace(/\/+$/, '')
 
 function isErrorResponse(value: unknown): value is ErrorResponse {
   return typeof value === 'object' && value !== null && 'error' in value &&
