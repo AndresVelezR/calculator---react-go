@@ -101,3 +101,40 @@ func TestMultiply(t *testing.T) {
 		})
 	}
 }
+
+func TestDivide(t *testing.T) {
+	testCases := []struct {
+		name           string
+		numerator      float64
+		denominator    float64
+		expectedResult float64
+	}{
+		{"exact division", 10, 2, 5},
+		{"negative result", -9, 3, -3},
+		{"decimal result", 1, 4, 0.25},
+		{"zero divided by something", 0, 5, 0},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			actualResult, err := Divide(
+				testCase.numerator,
+				testCase.denominator,
+			)
+
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			if actualResult != testCase.expectedResult {
+				t.Errorf(
+					"Divide(%v, %v) = %v, expected %v",
+					testCase.numerator,
+					testCase.denominator,
+					actualResult,
+					testCase.expectedResult,
+				)
+			}
+		})
+	}
+}
