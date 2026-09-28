@@ -81,7 +81,7 @@ func TestMultiply(t *testing.T) {
 	}
 }
 
-// Divide is the only one that can fail, so this table also has an
+// Divide can fail, so this table also has an
 // expectedError column. nil there means "we expect no error".
 func TestDivide(t *testing.T) {
 	testCases := []struct {
@@ -111,6 +111,87 @@ func TestDivide(t *testing.T) {
 			if actualResult != testCase.expectedResult {
 				t.Errorf("Divide(%v, %v) = %v, expected %v",
 					testCase.numerator, testCase.denominator, actualResult, testCase.expectedResult)
+			}
+		})
+	}
+}
+
+func TestPower(t *testing.T) {
+	testCases := []struct {
+		name           string
+		base           float64
+		exponent       float64
+		expectedResult float64
+	}{
+		{"positive exponent", 2, 3, 8},
+		{"zero exponent", 5, 0, 1},
+		{"negative exponent", 2, -2, 0.25},
+		{"fractional exponent", 9, 0.5, 3},
+		{"negative base", -2, 3, -8},
+		{"zero base", 0, 3, 0},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			actualResult := Power(testCase.base, testCase.exponent)
+			if actualResult != testCase.expectedResult {
+				t.Errorf("Power(%v, %v) = %v, expected %v",
+					testCase.base, testCase.exponent, actualResult, testCase.expectedResult)
+			}
+		})
+	}
+}
+
+func TestSquareRoot(t *testing.T) {
+	testCases := []struct {
+		name           string
+		number         float64
+		expectedResult float64
+		expectedError  error
+	}{
+		{"positive number", 9, 3, nil},
+		{"zero", 0, 0, nil},
+		{"decimal", 0.25, 0.5, nil},
+		{"negative number", -4, 0, ErrNegativeSquareRoot},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			actualResult, actualError := SquareRoot(testCase.number)
+			if !errors.Is(actualError, testCase.expectedError) {
+				t.Fatalf("SquareRoot(%v) error = %v, expected %v",
+					testCase.number, actualError, testCase.expectedError)
+			}
+			if actualResult != testCase.expectedResult {
+				t.Errorf("SquareRoot(%v) = %v, expected %v",
+					testCase.number, actualResult, testCase.expectedResult)
+			}
+		})
+	}
+}
+
+func TestPercentage(t *testing.T) {
+	testCases := []struct {
+		name           string
+		value          float64
+		percent        float64
+		expectedResult float64
+	}{
+		{"twenty percent", 50, 20, 10},
+		{"zero percent", 50, 0, 0},
+		{"zero value", 0, 20, 0},
+		{"over one hundred percent", 50, 150, 75},
+		{"negative value", -50, 20, -10},
+		{"negative percent", 50, -20, -10},
+		{"decimal percent", 200, 0.5, 1},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			actualResult := Percentage(testCase.value, testCase.percent)
+			if actualResult != testCase.expectedResult {
+				t.Errorf("Percentage(%v, %v) = %v, expected %v",
+					testCase.value, testCase.percent, actualResult, testCase.expectedResult)
 			}
 		})
 	}

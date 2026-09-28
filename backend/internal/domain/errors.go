@@ -11,7 +11,7 @@ var (
 	// Dividing by zero
 	ErrDivisionByZero = errors.New("division by zero")
 
-	// Square root of something below zero 
+	// Square root of something below zero
 	ErrNegativeSquareRoot = errors.New("square root of a negative number")
 
 	// unknown operation
