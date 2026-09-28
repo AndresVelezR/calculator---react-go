@@ -2,6 +2,8 @@
 
 The application is stateless. React manages input and presentation; Go performs every arithmetic operation. The domain package depends only on the Go standard library and can be tested without a server.
 
+Browse the [diagram gallery](diagrams/README.md) for the C4 views, component diagrams, deployment, domain boundary, state model, and test boundaries. The SVG views describe the v1.0.0 implementation.
+
 ## Components and layers
 
 ```mermaid
@@ -43,7 +45,7 @@ sequenceDiagram
     participant Domain as domain.Calculate
 
     User->>UI: Enter operands and press equals
-    UI->>UI: Validate input; mark loading; disable keys
+    UI->>UI: Validate input, mark loading and disable keys
     UI->>Client: calculate(operation, a, b)
     opt Browser needs a CORS preflight
         Client->>CORS: OPTIONS with Origin and requested method
@@ -67,7 +69,7 @@ sequenceDiagram
     end
     Client-->>UI: Return result or throw readable error
     UI->>UI: Update display/error and clear loading
-    UI-->>User: Show result or error; enable keys
+    UI-->>User: Show result or error and enable keys
 ```
 
 The diagram assumes an allowed origin. An unapproved preflight receives 403, and the browser denies access. Network failures are converted into a readable client error. The hook keeps the operands after an API error so the user can correct input or clear the calculation.

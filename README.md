@@ -239,4 +239,4 @@ The frontend has **61 passing tests in four files**. Its coverage includes App, 
 - **Explicit CORS origin:** the backend permits the configured frontend origin and answers preflight requests. This keeps development and Docker origins predictable.
 - **Stateless service:** no authentication, database, persisted history, or extra operations are included. Those are outside this calculator's scope.
 
-See [Architecture](docs/ARCHITECTURE.md) for component and request-sequence diagrams.
+See [Architecture](docs/ARCHITECTURE.md) for the editable Mermaid diagrams and the [diagram gallery](docs/diagrams/README.md) for the complete set of SVG architecture views.
